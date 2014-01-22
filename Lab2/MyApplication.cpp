@@ -87,8 +87,25 @@ public:
 
 	void createScene()
 	{
+		Plane plane(Ogre::Vector3::UNIT_Y, -5);
+
+		MeshManager::getSingleton().createPlane("plane", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 1500, 1500, 200, 200, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+		
 		Entity *ent = _sceneManager->createEntity("Sinbad.mesh");
+		Entity *ground = _sceneManager->createEntity("LightPlaneEntity", "plane");
+		
 		_sceneManager->getRootSceneNode()->attachObject(ent);
+		_sceneManager->getRootSceneNode()->attachObject(ground);
+
+		// create light
+		Light* light = _sceneManager->createLight("Light1");
+		light->setType(Light::LT_DIRECTIONAL);
+		light->setDirection(Ogre::Vector3(1, -1, 0));
+
+		// some shadows would be nice
+		_sceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
+
+		ground->setMaterialName("Examples/BeachStones");
 
 		_sceneManager->setAmbientLight(ColourValue(0.3f, 0.3f, 0.3f));
 	}
