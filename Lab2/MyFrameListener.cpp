@@ -45,12 +45,32 @@ public:
 
 	bool frameStarted(const FrameEvent& evt)
 	{
+		Ogre::Vector3 translate(0,0,0);
+
 		_keyboard->capture();
+		_mouse -> capture();
 
 		if (_keyboard->isKeyDown(KC_ESCAPE))
 		{
 			return false;
 		}
+		if (_keyboard->isKeyDown(KC_W))
+			translate += Ogre::Vector3(0,0,-1);
+		if (_keyboard->isKeyDown(KC_S))
+			translate += Ogre::Vector3(0,0,1);
+		if (_keyboard->isKeyDown(KC_A))
+			translate += Ogre::Vector3(-1,0,0);
+		if (_keyboard->isKeyDown(KC_D))
+			translate += Ogre::Vector3(1,0,0);
+
+		_cam->moveRelative(translate*evt.timeSinceLastFrame * _movementspeed);
+
+		float rotX = _mouse->getMouseState().X.rel * evt.timeSinceLastFrame * -1;
+		float rotY = _mouse->getMouseState().Y.rel * evt.timeSinceLastFrame * -1;
+
+		_cam->yaw(Radian(rotX));
+		_cam->pitch(Radian(rotY));
+
 		return true;
 	}
 };
