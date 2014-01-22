@@ -15,8 +15,13 @@ private:
 
 public:
 	// Constructor
-	MyFrameListener(RenderWindow* win)
+	MyFrameListener(RenderWindow* win, Camera* cam)
 	{
+		_cam = cam;
+		_mouse = static_cast<Mouse*>(_inputManager->createInputObject(OISMouse, false));
+		_movementspeed = 50.0f;
+		
+
 		ParamList parameters;
 		unsigned int windowHandle = 0;
 		std::ostringstream windowHandleString;
@@ -35,6 +40,7 @@ public:
 	~MyFrameListener()
 	{
 		_inputManager->destroyInputObject(_keyboard);
+		_inputManager->destroyInputObject(_mouse);
 		InputManager::destroyInputSystem(_inputManager);
 	}
 
