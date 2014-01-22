@@ -67,13 +67,13 @@ public:
 		RenderWindow* window = _root->initialise(true, "Ogre3D Beginners Guide");
 		_sceneManager = _root->createSceneManager(ST_GENERIC);
 
-		_listener = new MyFrameListener(window);
-		_root->addFrameListener(_listener);
-
 		Camera* camera = _sceneManager->createCamera("Camera");
 		camera->setPosition(Ogre::Vector3(0,0,50));
 		camera->lookAt(Ogre::Vector3(0,0,0));
 		camera->setNearClipDistance(5);
+
+		_listener = new MyFrameListener(window, camera);
+		_root->addFrameListener(_listener);
 
 		Viewport *viewPort = window->addViewport(camera);
 		viewPort->setBackgroundColour(ColourValue(0.0,0.0,0.0));

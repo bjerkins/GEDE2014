@@ -18,10 +18,8 @@ public:
 	MyFrameListener(RenderWindow* win, Camera* cam)
 	{
 		_cam = cam;
-		_mouse = static_cast<Mouse*>(_inputManager->createInputObject(OISMouse, false));
 		_movementspeed = 50.0f;
 		
-
 		ParamList parameters;
 		unsigned int windowHandle = 0;
 		std::ostringstream windowHandleString;
@@ -34,6 +32,7 @@ public:
 		_inputManager = InputManager::createInputSystem(parameters);
 
 		_keyboard = static_cast<Keyboard*>(_inputManager->createInputObject(OISKeyboard, false));
+		_mouse = static_cast<OIS::Mouse*>(_inputManager->createInputObject(OIS::OISMouse, false));
 	}
 
 	// Destructor
