@@ -22,6 +22,7 @@ public:
 		_root = NULL;
 		_listener = NULL;
 		_myOgre = NULL;
+		_myCube = NULL;
 	}
 
 	// Destructor
@@ -67,7 +68,7 @@ public:
 			return -1;
 		}
 
-		RenderWindow* window = _root->initialise(true, "Ogre3D Beginners Guide");
+		RenderWindow* window = _root->initialise(true, "Lab 3");
 		_sceneManager = _root->createSceneManager(ST_GENERIC);
 
 		Camera* camera = _sceneManager->createCamera("Camera");
@@ -96,20 +97,25 @@ public:
 		
 		_myOgre = _sceneManager->createEntity("Sinbad.mesh");
 		_myCube = _sceneManager->createEntity("Cube.mesh");
-		SceneNode *cubeNode = _myOgre->getParentSceneNode()->createChildSceneNode();
-		cubeNode->attachObject(_myCube);
-		cubeNode->scale(0.01, 0.01, 0.01);
-		cubeNode->setPosition(2.0, 0.0, 0.0); //Notice that this is relative to the Ogre's model origin
 
 		Entity *ground = _sceneManager->createEntity("LightPlaneEntity", "plane");
 		
 		_sceneManager->getRootSceneNode()->attachObject(_myOgre);
 		_sceneManager->getRootSceneNode()->attachObject(ground);
 
+		SceneNode *cubeNode = _myOgre->getParentSceneNode()->createChildSceneNode();
+		cubeNode->attachObject(_myCube);
+		cubeNode->scale(0.01, 0.01, 0.01);
+		cubeNode->setPosition(2.0, 0.0, 0.0); //Notice that this is relative to the Ogre's model origin
+
 		// create light
-		Light* light = _sceneManager->createLight("Light1");
+		Light *light = _sceneManager->createLight("Light1");
 		light->setType(Light::LT_DIRECTIONAL);
 		light->setDirection(Ogre::Vector3(1, -1, 0));
+
+		Light *plight = _sceneManager->createLight("Light2");
+		plight->setType(Light::LT_POINT);
+		cubeNode->attachObject(plight);
 
 		// some shadows would be nice
 		_sceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);

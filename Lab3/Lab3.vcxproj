@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CylindricalEffect.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="MyFrameListener.cpp" />
