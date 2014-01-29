@@ -10,6 +10,7 @@ private:
 	SceneManager* _sceneManager;
 	Root* _root;
 	MyFrameListener* _listener;
+	Entity *_myOgre;
 	bool _keepRunning;
 
 public:
@@ -19,6 +20,7 @@ public:
 		_sceneManager = NULL;
 		_root = NULL;
 		_listener = NULL;
+		_myOgre = NULL;
 	}
 
 	// Destructor
@@ -91,7 +93,7 @@ public:
 
 		MeshManager::getSingleton().createPlane("plane", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 1500, 1500, 200, 200, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
 		
-		Entity *ent = _sceneManager->createEntity("Sinbad.mesh");
+		_myOgre = _sceneManager->createEntity("Sinbad.mesh");
 		Entity *ground = _sceneManager->createEntity("LightPlaneEntity", "plane");
 		
 		_sceneManager->getRootSceneNode()->attachObject(ent);
