@@ -1,4 +1,5 @@
 #include "Ogre\Ogre.h"
+#include "CylindricalEffect.cpp"
 #include "OIS\OIS.h"
 
 using namespace Ogre;
@@ -11,11 +12,12 @@ private:
 	Keyboard* _keyboard;
 	Mouse* _mouse;
 	Camera* _cam;
+	CylindricalEffect* _cylEffect;
 	float _movementspeed;
 
 public:
 	// Constructor
-	MyFrameListener(RenderWindow* win, Camera* cam)
+	MyFrameListener(RenderWindow* win, Camera* cam, CylindricalEffect *cylEffect)
 	{
 		_cam = cam;
 		_movementspeed = 50.0f;
@@ -31,6 +33,9 @@ public:
 
 		_inputManager = InputManager::createInputSystem(parameters);
 
+		// cyl effect initialize
+		_cylEffect = cylEffect;
+
 		_keyboard = static_cast<Keyboard*>(_inputManager->createInputObject(OISKeyboard, false));
 		_mouse = static_cast<OIS::Mouse*>(_inputManager->createInputObject(OIS::OISMouse, false));
 	}
@@ -41,6 +46,7 @@ public:
 		_inputManager->destroyInputObject(_keyboard);
 		_inputManager->destroyInputObject(_mouse);
 		InputManager::destroyInputSystem(_inputManager);
+		delete _cylEffect;
 	}
 
 	bool frameStarted(const FrameEvent& evt)
@@ -70,6 +76,8 @@ public:
 
 		_cam->yaw(Radian(rotX));
 		_cam->pitch(Radian(rotY));
+
+		_cylEffect->update(0.1f);
 
 		return true;
 	}

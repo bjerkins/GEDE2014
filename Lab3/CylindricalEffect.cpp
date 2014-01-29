@@ -1,4 +1,5 @@
-#include "Ogre\Ogre.h"
+﻿#include "Ogre\Ogre.h"
+#include "OgreMath.h"
 
 using namespace Ogre;
 
@@ -10,10 +11,24 @@ private:
 	Ogre::Vector3 _velocity;	// the velocity of the object along the three axes of the cylindrical coordinates, i.e. along the height axis, along the radius and the angular velocity along the circle.
 
 public:
-	CylindricalEffect(Entity* entity, Vector3 position, Vector3 velocity)
+	CylindricalEffect(Entity* entity, Ogre::Vector3 position, Ogre::Vector3 velocity)
 	{
 		_myEnt = entity;
 		_position = position;
 		_velocity = velocity;
+	}
+
+	Ogre::Vector3 GetCartesian()
+	{
+		// (height,radius,angle) = (h, r, α)
+		double x = Math::Cos(_position.z) * _position.y;
+		double y = _position.x;
+		double z = Math::Sin(_position.z) * _position.y;
+		return Ogre::Vector3(x,y,z);
+	}
+
+	void update(float dt) {
+		_position = _position + dt*_velocity;
+		_myEnt->getParentSceneNode()->setPosition(GetCartesian());	
 	}
 };

@@ -76,7 +76,7 @@ public:
 		camera->lookAt(Ogre::Vector3(0,0,0));
 		camera->setNearClipDistance(5);
 
-		_listener = new MyFrameListener(window, camera);
+		_listener = new MyFrameListener(window, camera, new CylindricalEffect(_myCube, _myCube->getParentSceneNode()->getPosition(), Ogre::Vector3(0.0, 0.0, 0.1)));
 		_root->addFrameListener(_listener);
 
 		Viewport *viewPort = window->addViewport(camera);
