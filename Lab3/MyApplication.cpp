@@ -11,6 +11,7 @@ private:
 	Root* _root;
 	MyFrameListener* _listener;
 	Entity *_myOgre;
+	Entity *_myCube;
 	bool _keepRunning;
 
 public:
@@ -94,9 +95,15 @@ public:
 		MeshManager::getSingleton().createPlane("plane", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 1500, 1500, 200, 200, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
 		
 		_myOgre = _sceneManager->createEntity("Sinbad.mesh");
+		_myCube = _sceneManager->createEntity("Cube.mesh");
+		SceneNode *cubeNode = _myOgre->getParentSceneNode()->createChildSceneNode();
+		cubeNode->attachObject(_myCube);
+		cubeNode->scale(0.01, 0.01, 0.01);
+		cubeNode->setPosition(2.0, 0.0, 0.0); //Notice that this is relative to the Ogre's model origin
+
 		Entity *ground = _sceneManager->createEntity("LightPlaneEntity", "plane");
 		
-		_sceneManager->getRootSceneNode()->attachObject(ent);
+		_sceneManager->getRootSceneNode()->attachObject(_myOgre);
 		_sceneManager->getRootSceneNode()->attachObject(ground);
 
 		// create light
