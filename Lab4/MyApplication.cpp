@@ -68,7 +68,7 @@ public:
 			return -1;
 		}
 
-		RenderWindow* window = _root->initialise(true, "Lab 3");
+		RenderWindow* window = _root->initialise(true, "Lab 4");
 		_sceneManager = _root->createSceneManager(ST_GENERIC);
 
 		Camera* camera = _sceneManager->createCamera("Camera");
@@ -107,15 +107,20 @@ public:
 		cubeNode->attachObject(_myCube);
 		cubeNode->scale(0.01, 0.01, 0.01);
 		cubeNode->setPosition(2.0, 0.0, 0.0); //Notice that this is relative to the Ogre's model origin
+		Light *plight = _sceneManager->createLight("Light2");
+		plight->setType(Light::LT_POINT);
+		cubeNode->attachObject(plight);
+
+		Ogre::Entity* myCustomCube = _sceneManager->createEntity("MyCube", "MyCube.mesh");
+		Ogre::SceneNode* myCustomCubeNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
+		myCustomCubeNode->attachObject(myCustomCube);
+		myCustomCubeNode->setPosition(16.0, 0, 0);
+		myCustomCubeNode->setScale(5.0,5.0,5.0); // You may have to scale your object to see it well\\
 
 		// create light
 		Light *light = _sceneManager->createLight("Light1");
 		light->setType(Light::LT_DIRECTIONAL);
 		light->setDirection(Ogre::Vector3(1, -1, 0));
-
-		Light *plight = _sceneManager->createLight("Light2");
-		plight->setType(Light::LT_POINT);
-		cubeNode->attachObject(plight);
 
 		// some shadows would be nice
 		_sceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
