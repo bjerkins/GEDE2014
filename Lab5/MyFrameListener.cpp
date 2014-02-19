@@ -14,17 +14,18 @@ private:
 	JoyStick * _joyStick;
 	Camera* _cam;
 	CylindricalEffect* _cylEffect;
+	SceneNode* _ogreNode;
 	float _movementspeed;
 	float _camAngle;
 
 public:
 	// Constructor
-	MyFrameListener(RenderWindow* win, Camera* cam, CylindricalEffect *cylEffect)
+	MyFrameListener(RenderWindow* win, Camera* cam, CylindricalEffect *cylEffect, SceneNode* ogreNode)
 	{
 		_cam = cam;
 		_movementspeed = 50.0f;
 		_camAngle = -1*Ogre::Math::HALF_PI;
-		
+		_ogreNode = ogreNode;
 		ParamList parameters;
 		unsigned int windowHandle = 0;
 		std::ostringstream windowHandleString;
@@ -99,6 +100,9 @@ public:
 
 		_cylEffect->update(0.1f);
 
+		_cam->setPosition(_ogreNode->getPosition()+Ogre::Vector3(20.0f*Ogre::Math::Cos(_camAngle), 10.0f, 20.0f*Ogre::Math::Sin(_camAngle)));
+		_cam->lookAt(_ogreNode->getPosition());
+
 		return true;
 	}
 
@@ -106,7 +110,7 @@ public:
 		int value = e.state.mAxes[axis].abs;
 		switch(axis) {
 			case 1:
-				std::cout << "1:" << value << "\n";
+				_camAngle = Ogre::Math::TWO_PI * ((float(-1*value) / float(_joyStick->MAX_AXIS) + 1.0f)/2.0f)+Ogre::Math::HALF_PI;
 				break;
 		}
 		return true;

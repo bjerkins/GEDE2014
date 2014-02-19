@@ -10,6 +10,7 @@ private:
 	SceneManager* _sceneManager;
 	Root* _root;
 	MyFrameListener* _listener;
+	SceneNode* _ogreNode;
 	Entity *_myOgre;
 	Entity *_myCube;
 	bool _keepRunning;
@@ -84,7 +85,7 @@ public:
 		loadResources(); 
 		createScene();
 
-		_listener = new MyFrameListener(window, camera, new CylindricalEffect(_myCube, Ogre::Vector3(2.0, 10.0, 0.0), Ogre::Vector3(0.0, 0.0, 0.1)));
+		_listener = new MyFrameListener(window, camera, new CylindricalEffect(_myCube, Ogre::Vector3(2.0, 10.0, 0.0), Ogre::Vector3(0.0, 0.0, 0.1)), _ogreNode);
 		_root->addFrameListener(_listener);
 		return 0;
 	}
@@ -98,9 +99,11 @@ public:
 		_myOgre = _sceneManager->createEntity("Sinbad.mesh");
 		_myCube = _sceneManager->createEntity("Cube.mesh");
 
+		_ogreNode = _sceneManager->getRootSceneNode()->createChildSceneNode();
+		_ogreNode->attachObject(_myOgre);
+
 		Entity *ground = _sceneManager->createEntity("LightPlaneEntity", "plane");
 		
-		_sceneManager->getRootSceneNode()->attachObject(_myOgre);
 		_sceneManager->getRootSceneNode()->attachObject(ground);
 
 		SceneNode *cubeNode = _myOgre->getParentSceneNode()->createChildSceneNode();
