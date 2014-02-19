@@ -5,15 +5,17 @@
 using namespace Ogre;
 using namespace OIS;
 
-class MyFrameListener : public FrameListener
+class MyFrameListener : public FrameListener, public JoyStickListener
 {
 private:
 	InputManager* _inputManager;
 	Keyboard* _keyboard;
 	Mouse* _mouse;
+	JoyStick * _joyStick;
 	Camera* _cam;
 	CylindricalEffect* _cylEffect;
 	float _movementspeed;
+	float _camAngle;
 
 public:
 	// Constructor
@@ -21,6 +23,7 @@ public:
 	{
 		_cam = cam;
 		_movementspeed = 50.0f;
+		_camAngle = -1*Ogre::Math::HALF_PI;
 		
 		ParamList parameters;
 		unsigned int windowHandle = 0;
@@ -38,6 +41,18 @@ public:
 
 		_keyboard = static_cast<Keyboard*>(_inputManager->createInputObject(OISKeyboard, false));
 		_mouse = static_cast<OIS::Mouse*>(_inputManager->createInputObject(OIS::OISMouse, false));
+
+		// Try to create joystick
+		try {
+			_joyStick = static_cast<OIS::JoyStick*>(_inputManager->createInputObject( OIS::OISJoyStick, true ));
+			_joyStick->setEventCallback(this);
+			std::cout << "Successfuly created Joystick";
+		}
+		catch(...) {
+			std::cout << "Failed to initialize Joystick";
+			_joyStick = 0;
+		}
+
 	}
 
 	// Destructor
@@ -45,6 +60,7 @@ public:
 	{
 		_inputManager->destroyInputObject(_keyboard);
 		_inputManager->destroyInputObject(_mouse);
+		_inputManager->destroyInputObject(_joyStick);
 		InputManager::destroyInputSystem(_inputManager);
 		delete _cylEffect;
 	}
@@ -55,6 +71,10 @@ public:
 
 		_keyboard->capture();
 		_mouse -> capture();
+
+		if( _joyStick ) 
+			_joyStick->capture(); 
+
 
 		if (_keyboard->isKeyDown(KC_ESCAPE))
 		{
@@ -79,6 +99,28 @@ public:
 
 		_cylEffect->update(0.1f);
 
+		return true;
+	}
+
+	bool MyFrameListener::axisMoved(const OIS::JoyStickEvent &e, int axis) {
+		int value = e.state.mAxes[axis].abs;
+		switch(axis) {
+			case 1:
+				std::cout << "1:" << value << "\n";
+				break;
+		}
+		return true;
+	}
+
+	bool MyFrameListener::buttonPressed(const OIS::JoyStickEvent &arg, int button) {
+		return true;
+	}
+
+	bool MyFrameListener::buttonReleased(const OIS::JoyStickEvent &arg, int button) {
+		return true;
+	}
+
+	bool MyFrameListener::povMoved(const OIS::JoyStickEvent &arg, int pov) {
 		return true;
 	}
 };
