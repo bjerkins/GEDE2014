@@ -198,8 +198,17 @@ public:
 
 		// And now wrap up the object and add to scene graph for display
 		manual->end();
-		SceneNode* grassNode = _sceneManager->getRootSceneNode()->createChildSceneNode("GrassNode2");
-		grassNode->attachObject(manual);
+		manual->convertToMesh("BladesOfGrass");
+		Ogre::StaticGeometry* field = _sceneManager->createStaticGeometry("FieldOfGrass");
+		// Create a bunch of grass !
+		for (int i = 0; i < 49; i++) {
+			for (int j = 0; j < 49; j++) {
+				Ogre::Entity* ent = _sceneManager->createEntity("BladesOfGrass");
+				field->addEntity(ent,Ogre::Vector3(i*3,-10,j*3));
+			}
+		}
+		field->build();
+		
 	}
 
 	void renderOneFrame()
