@@ -98,7 +98,7 @@ public:
 		
 		_myOgre = _sceneManager->createEntity("Sinbad.mesh");
 		_myOgre->getSubEntity(0)->setCustomParameter(1, Ogre::Vector4(0.0, 0.0, 1.0, 1.0));
-		_myOgre->setMaterialName("shader/custom");
+		_myOgre->setMaterialName("shader/lighting");
 
 		_myCube = _sceneManager->createEntity("Cube.mesh");
 
@@ -132,7 +132,7 @@ public:
 		_sceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 
 		//ground->setMaterialName("Examples/BeachStones");
-		ground->setMaterialName("shader/orange");
+		ground->setMaterialName("shader/texture_move");
 
 		_sceneManager->setAmbientLight(ColourValue(0.3f, 0.3f, 0.3f));
 
